@@ -13,50 +13,14 @@ retry logic in your Spring applications with ease.
 
 ## How?
 
-### Enable Spring Retry
+### 1. Enable Spring Retry
 
-```java
-@SpringBootApplication
-@EnableRetry 
-public class Main {
-    
-}
-```
+https://github.com/behrangsa/examples-spring-retry/blob/b3b00355b5a03df249e84350d774343247d0e98f/src/main/java/org/behrang/examples/spring/retry/Main.java#L7-L9
 
-### Annotate your Retryable methods
+### 2. Annotate your Retryable methods
 
-```java
-@Retryable(value = {RuntimeException.class}, maxAttempts = 5, backoff = @Backoff(value = 5))
-public String eventuallyWorkingService(int succeedOnAttempt) {
+https://github.com/behrangsa/examples-spring-retry/blob/b3b00355b5a03df249e84350d774343247d0e98f/src/main/java/org/behrang/examples/spring/retry/SampleService.java#L16-L26
 
-}
-```
+### 3. Test your Retryable methods
 
-### Test your Retryable methods
-
-```java
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class SampleServiceTests {
-
-    @Autowired
-    private SampleService sampleService;
-
-    @Before
-    public void before() {
-        sampleService.resetCount();
-    }
-
-    @Test
-    public void shouldAttemptUpToFiveTimes() {
-        final String result = sampleService.eventuallyWorkingService(5);
-        assertThat(result).isEqualTo("Call count: 5");
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void shouldFailOnSixthCall() {
-        sampleService.eventuallyWorkingService(6);
-    }
-
-}
-```
+https://github.com/behrangsa/examples-spring-retry/blob/b3b00355b5a03df249e84350d774343247d0e98f/src/test/java/org/behrang/examples/spring/retry/SampleServiceTests.java#L24-L33
